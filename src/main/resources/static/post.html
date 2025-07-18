@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-<h1>📝 게시글 상세</h1>
+<h1>게시글 상세</h1>
 
 <div id="postDetail"></div>
 
@@ -57,12 +57,12 @@
                 <p><small>작성일: ${formattedDate}</small></p>
             `;
 
-            // ✅ user_id로 비교 (snake_case 응답 대응)
+            // user_id로 비교 (snake_case 응답 대응)
             if (loginUserId == post.user_id) {
                 html += `
                     <div id="buttonWrapper">
-                        <button onclick="toggleEdit()">✏️ 수정</button>
-                        <button onclick="confirmDelete()">🗑️ 삭제</button>
+                        <button onclick="toggleEdit()">수정</button>
+                        <button onclick="confirmDelete()">삭제</button>
                     </div>
                 `;
 
