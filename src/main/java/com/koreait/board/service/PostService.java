@@ -21,12 +21,12 @@ public class PostService {
         postMapper.insertPost(post);
     }
 
-    // ✅ 페이징 적용된 게시글 목록 조회
+    // 페이징 적용된 게시글 목록 조회
     public List<Post> getPostsWithPaging(int offset, int size) {
         return postMapper.getPostsWithPaging(offset, size);
     }
 
-    // ✅ 전체 게시글 수 반환 (선택사항: 프론트에서 totalPages 계산할 때 유용)
+    // 전체 게시글 수 반환 (선택사항: 프론트에서 totalPages 계산할 때 유용)
     public int getPostCount() {
         return postMapper.getPostCount();
     }
