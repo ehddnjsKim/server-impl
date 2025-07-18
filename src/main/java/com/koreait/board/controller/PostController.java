@@ -21,7 +21,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    // ✅ 게시글 작성 (세션 인증 처리 포함)
+    // 게시글 작성 (세션 인증 처리 포함)
     @PostMapping
     public ResponseEntity<String> createPost(@RequestBody Post post, HttpSession session) {
         User loginUser = (User) session.getAttribute("loginUser");
@@ -35,7 +35,7 @@ public class PostController {
         return ResponseEntity.ok("게시글 작성 완료!");
     }
 
-    // ✅ 전체 게시글 조회 (페이징)
+    // 전체 게시글 조회 (페이징)
     @GetMapping
     public ResponseEntity<List<Post>> getPosts(
             @RequestParam(defaultValue = "1") int page,
@@ -45,14 +45,14 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-    // ✅ 게시글 상세 조회
+    // 게시글 상세 조회
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable int id) {
         Post post = postService.getPostById(id);
         return post != null ? ResponseEntity.ok(post) : ResponseEntity.notFound().build();
     }
 
-    // ✅ 게시글 수정 (세션 사용자 기준으로 userId 강제 설정)
+    // 게시글 수정 (세션 사용자 기준으로 userId 강제 설정)
     @PutMapping("/{id}")
     public ResponseEntity<String> updatePost(@PathVariable int id, @RequestBody Post post, HttpSession session) {
         User loginUser = (User) session.getAttribute("loginUser");
@@ -69,7 +69,7 @@ public class PostController {
         return result ? ResponseEntity.ok("수정 완료") : ResponseEntity.badRequest().body("수정 실패");
     }
 
-    // ✅ 게시글 삭제
+    // 게시글 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable int id, HttpSession session) {
         Post post = postService.getPostById(id);
@@ -87,7 +87,7 @@ public class PostController {
         return result ? ResponseEntity.ok("삭제 완료") : ResponseEntity.badRequest().body("삭제 실패");
     }
 
-    // ✅ 게시글 수 (페이징용)
+    // 게시글 수 (페이징용)
     @GetMapping("/count")
     public ResponseEntity<Integer> getPostCount() {
         return ResponseEntity.ok(postService.getPostCount());
