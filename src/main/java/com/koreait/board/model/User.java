@@ -9,6 +9,6 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private LocalDateTime createdAt; // ✅ 카멜 케이스
+    private LocalDateTime createdAt; 
 }
 
