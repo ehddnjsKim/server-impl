@@ -1,0 +1,15 @@
+# 로그
+*.log
+
+# 환경 설정
+*.env
+application.properties
+application.yml
+
+# 빌드
+build/
+target/
+
+# IDE 설정
+.idea/
+*.iml

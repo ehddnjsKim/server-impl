@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+</head>
+<body>
+<h1>🙋 내 정보</h1>
+
+<div id="userInfo">
+    <p><strong>아이디:</strong> <span id="username"></span></p>
+    <p><strong>이메일:</strong> <span id="email"></span></p>
+    <p><strong>가입일:</strong> <span id="createdAt"></span></p>
+</div>
+
+<hr>
+
+<h3>회원 정보 수정</h3>
+<form id="editForm">
+    <input type="text" id="newUsername" placeholder="새 아이디" required><br>
+    <input type="email" id="newEmail" placeholder="새 이메일"><br>
+    <input type="password" id="newPassword" placeholder="새 비밀번호" required><br>
+    <button type="submit">수정</button>
+</form>
+
+<p id="message"></p>
+<nav style="margin-bottom: 20px;">
+    <a href="index.html">🏠 게시판</a> |
+    <a href="login.html" onclick="logout()">🚪 로그아웃</a>
+</nav>
+<script>
+    // 로그인 사용자 정보 불러오기
+    let loginUser = null;
+
+    async function loadUser() {
+        const res = await fetch("/api/users/session"); // 세션 정보 요청
+        if (!res.ok) {
+            document.getElementById("message").innerText = "로그인이 필요합니다.";
+            return;
+        }
+        loginUser = await res.json();
+        document.getElementById("username").innerText = loginUser.username;
+        document.getElementById("email").innerText = loginUser.email || "-";
+        document.getElementById("createdAt").innerText = loginUser.createdAt?.replace("T", " ").slice(0, 16) || "-";
+
+        // 수정 폼 기본값 설정
+        document.getElementById("newUsername").value = loginUser.username;
+        document.getElementById("newEmail").value = loginUser.email || "";
+    }
+
+    // 수정 요청
+    document.getElementById("editForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const updatedUser = {
+            username: document.getElementById("newUsername").value,
+            email: document.getElementById("newEmail").value,
+            password: document.getElementById("newPassword").value
+        };
+
+        const res = await fetch(`/api/users/${loginUser.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedUser)
+        });
+
+        if (res.ok) {
+            alert("수정 완료! 다시 로그인해주세요.");
+            window.location.href = "login.html";
+        } else {
+            const err = await res.text();
+            document.getElementById("message").innerText = "수정 실패: " + err;
+        }
+    });
+
+    loadUser();
+</script>
+</body>
+</html>

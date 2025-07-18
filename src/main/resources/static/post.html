@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세</title>
+    <style>
+        #buttonWrapper {
+            margin-top: 10px;
+            text-align: right;
+        }
+        #buttonWrapper button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>📝 게시글 상세</h1>
+
+<div id="postDetail"></div>
+
+<hr>
+
+<div id="editSection" style="display: none;">
+    <h3>수정하기</h3>
+    <form id="editForm">
+        <input type="text" id="editTitle" required><br>
+        <textarea id="editContent" required></textarea><br>
+        <button type="submit">수정</button>
+    </form>
+</div>
+
+<p><a href="index.html">← 게시판 목록으로 돌아가기</a></p>
+
+<script>
+    const params = new URLSearchParams(location.search);
+    const postId = params.get("id");
+    const loginUserId = sessionStorage.getItem("loginUserId");
+
+    let postData = null;
+
+    fetch(`/api/posts/${postId}`)
+        .then(res => {
+            if (!res.ok) throw new Error("게시글 조회 실패");
+            return res.json();
+        })
+        .then(post => {
+            postData = post;
+
+            const formattedDate = post.created_at
+                ? post.created_at.replace("T", " ").slice(0, 16)
+                : "날짜 없음";
+
+            // 기본 출력 내용
+            let html = `
+                <h2>${post.title}</h2>
+                <p>${post.content}</p>
+                <p><small>작성일: ${formattedDate}</small></p>
+            `;
+
+            // ✅ user_id로 비교 (snake_case 응답 대응)
+            if (loginUserId == post.user_id) {
+                html += `
+                    <div id="buttonWrapper">
+                        <button onclick="toggleEdit()">✏️ 수정</button>
+                        <button onclick="confirmDelete()">🗑️ 삭제</button>
+                    </div>
+                `;
+
+                // 수정폼 초기 세팅
+                document.getElementById("editTitle").value = post.title;
+                document.getElementById("editContent").value = post.content;
+            }
+
+            document.getElementById("postDetail").innerHTML = html;
+        })
+        .catch(err => {
+            alert("게시글 정보를 불러오는 데 실패했습니다.");
+            console.error(err);
+        });
+
+    // 수정 폼 토글
+    function toggleEdit() {
+        const section = document.getElementById("editSection");
+        section.style.display = section.style.display === "none" ? "block" : "none";
+    }
+
+    // 수정 요청
+    document.getElementById("editForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const updatedPost = {
+            title: document.getElementById("editTitle").value,
+            content: document.getElementById("editContent").value
+        };
+
+        fetch(`/api/posts/${postId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedPost)
+        })
+            .then(res => {
+                if (res.ok) {
+                    alert("수정 완료");
+                    location.reload();
+                } else {
+                    return res.text().then(text => { throw new Error(text); });
+                }
+            })
+            .catch(err => alert("수정 실패: " + err.message));
+    });
+
+    // 삭제 요청
+    function confirmDelete() {
+        if (!confirm("정말로 이 게시글을 삭제하시겠습니까?")) return;
+
+        fetch(`/api/posts/${postId}`, {
+            method: "DELETE"
+        })
+            .then(res => {
+                if (res.ok) {
+                    alert("삭제 완료");
+                    window.location.href = "index.html";
+                } else {
+                    return res.text().then(text => { throw new Error(text); });
+                }
+            })
+            .catch(err => alert("삭제 실패: " + err.message));
+    }
+</script>
+</body>
+</html>
