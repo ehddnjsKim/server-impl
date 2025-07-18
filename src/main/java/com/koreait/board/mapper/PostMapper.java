@@ -16,7 +16,7 @@ public interface PostMapper {
     int updatePost(Post post);
     int deletePost(int id);
 
-    // ✅ 페이징 기능 추가
+    // 페이징 기능 추가
     List<Post> getPostsWithPaging(@Param("offset") int offset, @Param("size") int size);
     int getPostCount();
 }
