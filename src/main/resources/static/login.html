@@ -42,7 +42,7 @@
                 sessionStorage.setItem("loginUsername", data.username);
 
                 messageEl.style.color = "green";
-                messageEl.innerText = "✅ 로그인 성공! 메인 페이지로 이동합니다.";
+                messageEl.innerText = "로그인 성공! 메인 페이지로 이동합니다.";
                 setTimeout(() => window.location.href = "index.html", 1000);
             } else {
                 const text = await res.text();
@@ -50,7 +50,7 @@
             }
         } catch (err) {
             messageEl.style.color = "red";
-            messageEl.innerText = "❌ 로그인 실패: " + err.message;
+            messageEl.innerText = "로그인 실패: " + err.message;
         }
     });
 </script>
