@@ -32,9 +32,9 @@ board/
 │ ├── application.properties (.gitignore로 제외)
 │ └── mapper/*.xml
 ├── static/ (HTML, JS 클라이언트 파일)
-├── database.sql ✅ (모든 SQL 쿼리 포함)
-├── .gitignore ✅
-├── README.md ✅
+├── database.sql (모든 SQL 쿼리 포함)
+├── .gitignore 
+├── README.md 
 
 # 실행 방법
 # MySQL 데이터베이스 설정
