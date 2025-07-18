@@ -5,7 +5,7 @@
     <title>게시판</title>
 </head>
 <body>
-<h1>📋 게시판</h1>
+<h1>게시판</h1>
 
 <form id="postForm">
     <input type="text" id="title" placeholder="제목" required><br>
@@ -17,13 +17,13 @@
 
 <div id="postList"></div>
 
-<!-- ✅ 페이징 버튼 영역 -->
+<!-- 페이징 버튼 영역 -->
 <div id="pagination"></div>
 
 <nav style="margin-bottom: 20px;">
-    <a href="post.html">🏠 게시글</a> |
-    <a href="mypage.html">🙋 마이페이지</a> |
-    <a href="login.html" onclick="logout()">🚪 로그아웃</a>
+    <a href="post.html">게시글</a> |
+    <a href="mypage.html">마이페이지</a> |
+    <a href="login.html" onclick="logout()">로그아웃</a>
 </nav>
 
 <script>
@@ -38,7 +38,7 @@
         fetch(`/api/posts?page=${page}&size=${size}`)
             .then(res => res.json())
             .then(posts => {
-                console.log("📦 불러온 게시글:", posts);
+                console.log("불러온 게시글:", posts);
                 const listDiv = document.getElementById("postList");
                 listDiv.innerHTML = "";
 
@@ -64,7 +64,7 @@
                 });
             })
             .catch(err => {
-                console.error("❌ 게시글 불러오기 실패:", err);
+                console.error("게시글 불러오기 실패:", err);
             });
 
         // 전체 글 수로 페이지 버튼
@@ -134,7 +134,7 @@
             else throw new Error("로그인 안됨");
         })
         .then(user => {
-            loginUserId = user.id; // ✅ 내 글 판단용
+            loginUserId = user.id;
             loadPosts();
         })
         .catch(() => {
