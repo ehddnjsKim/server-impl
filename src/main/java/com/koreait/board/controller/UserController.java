@@ -21,14 +21,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    // ✅ 회원가입
+    // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         userService.registerUser(user);
         return ResponseEntity.ok("회원가입 성공!");
     }
 
-    // ✅ 로그인
+    // 로그인
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginInfo, HttpSession session) {
         String username = loginInfo.get("username");
@@ -40,7 +40,7 @@ public class UserController {
             // 세션에 로그인 사용자 저장
             session.setAttribute("loginUser", user);
 
-            // ✅ 프론트에서 사용할 수 있도록 사용자 ID와 username 반환
+            // 프론트에서 사용할 수 있도록 사용자 ID와 username 반환
             Map<String, Object> response = new HashMap<>();
             response.put("id", user.getId());
             response.put("username", user.getUsername());
@@ -51,7 +51,7 @@ public class UserController {
         }
     }
 
-    // ✅ 로그인된 사용자 정보 조회
+    // 로그인된 사용자 정보 조회
     @GetMapping("/session")
     public ResponseEntity<User> getSessionUser(HttpSession session) {
         User loginUser = (User) session.getAttribute("loginUser");
@@ -62,7 +62,7 @@ public class UserController {
         }
     }
 
-    // ✅ 회원 정보 조회
+    // 회원 정보 조회
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id) {
         User user = userService.getUserById(id);
@@ -73,7 +73,7 @@ public class UserController {
         }
     }
 
-    // ✅ 회원 정보 수정
+    // 회원 정보 수정
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody User user) {
         user.setId(id);
